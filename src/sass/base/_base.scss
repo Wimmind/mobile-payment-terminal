@@ -2,11 +2,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Rubik';
+    font-family: 'Aldrich', sans-serif;
 }
 
 body {
     min-height: 100vh;
+    background-color: #fff;
 }
 
 button {
@@ -35,4 +36,8 @@ a {
     @include media-laptop {
         max-width: $tablet-width;
     }
+}
+
+.main_wrapper {
+    padding: 0 10px;
 }
