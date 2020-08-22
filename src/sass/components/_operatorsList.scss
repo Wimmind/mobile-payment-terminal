@@ -50,3 +50,12 @@
     background-color: #1282a2;
     border: 3px solid $light-background;
 }
+
+.add-operator-btn {
+    margin-bottom: 20px;
+    padding: 10px;
+    &:hover {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        outline: solid #1282a2 1px;
+    }
+}

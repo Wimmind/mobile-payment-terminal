@@ -1,45 +1,65 @@
-import React, {Component} from 'react';
-import dataMobileOperators from '../data/dataMobileOperators'
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect, useReducer} from 'react';
+import dataMobileOperators from '../data/dataMobileOperators';
+import OperatorItem from './operatorItem'
+import Context from '../context';
+import reducer from '../reducer';
 
-export default class OperatorsList extends Component {
+export default function OperatorsList(){
+    const [state, dispatch] = useReducer(reducer, JSON.parse(localStorage.getItem('operatorsList') || JSON.stringify(dataMobileOperators)));
+    //const [operatorsList, setOperator] = useState([]);
 
-    render () {
-        return (
+    /*useEffect(()=>{
+        const list = localStorage.getItem('operatorsList') || JSON.stringify(dataMobileOperators);
+        setOperator(JSON.parse(list))
+    }, []) */
+
+    useEffect(()=>{
+        localStorage.setItem('operatorsList',JSON.stringify(/*operatorsList*/state));
+    },[state/*operatorsList*/]);
+
+    const addOperator = () => {
+        dispatch({
+            type: 'add'
+        })
+        /*setOperator([
+            ...state,{
+                id: Date.now(),
+                name: 'yota',
+                completed: false
+            }
+        ])*/
+    };
+
+    /*const removeOperator = id => {
+        setOperator(operatorsList.filter(operator=>{
+            return operator.id !== id
+        }))
+    }
+
+    const toggleOperator = id => {
+        setOperator(operatorsList.map(operator=>{
+            if  (operator.id === id) {
+                operator.completed = !operator.completed
+            }
+            return operator;
+        }))
+    }*/
+
+    return (
+        <Context.Provider value = {{/*removeOperator, toggleOperator*/dispatch}}>
+            <button className='add-operator-btn' onClick={addOperator}>Добавить оператора</button>
             <ul className="operators-list">
-                {dataMobileOperators.map((item,i)=>(
+                {/*operatorsList*/state.map((item,i)=>(
                     <OperatorItem
                         key={i.toString()+'operator'}
                         name = {item.name}
+                        completed = {item.completed}
+                        id = {item.id}
                     />
                 ))}
             </ul>
-        )
-    }
-}
-
-
-const OperatorItem = (props) => {
-
-    const { name } = props;
-
-    return (
-        <Link to={
-            {
-                pathname: '/payment',
-                someProps: {
-                    name: name
-                }
-            }
-            }>
-            <li className="operators-list-item">
-                <div className="operators-list-item_icon">
-                    <img  src={process.env.PUBLIC_URL + `/icons/${name}.png`} ></img>
-                </div>
-                <div className="operators-list-item_name">
-                    <h2>{name}</h2>
-                </div>
-            </li>
-        </Link>
+        </Context.Provider>
     )
 }
+
+
